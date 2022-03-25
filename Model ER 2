@@ -1,0 +1,90 @@
+CREATE TABLE `Usuaris` (
+	`DNI` varchar(9) NOT NULL UNIQUE,
+	`Nom` varchar(20) NOT NULL,
+	`email` varchar(60) NOT NULL,
+	`Cognoms` varchar(40) NOT NULL,
+	`Imatge` varchar(60) NOT NULL DEFAULT '/img/defaultuser',
+	PRIMARY KEY (`DNI`)
+);
+
+CREATE TABLE `Lloga_kit` (
+	`DNI` varchar(9) NOT NULL AUTO_INCREMENT,
+	`ID_kit` INT NOT NULL,
+	`Data` DATE(10) NOT NULL,
+	PRIMARY KEY (`DNI`)
+);
+
+CREATE TABLE `Kit` (
+	`ID_kit` INT NOT NULL AUTO_INCREMENT,
+	`Preu` DECIMAL(6) NOT NULL,
+	`Vegades_guardat` INT(6) NOT NULL,
+	PRIMARY KEY (`ID_kit`)
+);
+
+CREATE TABLE `Conforma_kit` (
+	`ID_kit` INT NOT NULL,
+	`ID_material` INT NOT NULL,
+	PRIMARY KEY (`ID_kit`)
+);
+
+CREATE TABLE `Material` (
+	`ID_material` INT NOT NULL AUTO_INCREMENT,
+	`Marca` varchar(20) NOT NULL,
+	`Model` varchar(30) NOT NULL,
+	`Vegades_utilitzat` INT(2) NOT NULL,
+	`Preu` DECIMAL(6) NOT NULL,
+	`Imatge` varchar(60) NOT NULL,
+	`Estat` BOOLEAN NOT NULL DEFAULT true,
+	PRIMARY KEY (`ID_material`)
+);
+
+CREATE TABLE `Pals` (
+	`ID_material` INT NOT NULL,
+	`Altura` DECIMAL NOT NULL,
+	PRIMARY KEY (`ID_material`)
+);
+
+CREATE TABLE `Esquis` (
+	`ID_material` INT NOT NULL,
+	`Altura` DECIMAL NOT NULL,
+	PRIMARY KEY (`ID_material`)
+);
+
+CREATE TABLE `Botes` (
+	`ID_material` INT NOT NULL,
+	`Talla` DECIMAL NOT NULL,
+	PRIMARY KEY (`ID_material`)
+);
+
+CREATE TABLE `Lloga_material` (
+	`DNI` varchar(9) NOT NULL,
+	`ID_material` INT NOT NULL,
+	PRIMARY KEY (`DNI`)
+);
+
+ALTER TABLE `Lloga_kit` ADD CONSTRAINT `Lloga_kit_fk0` FOREIGN KEY (`DNI`) REFERENCES `Usuaris`(`DNI`);
+
+ALTER TABLE `Lloga_kit` ADD CONSTRAINT `Lloga_kit_fk1` FOREIGN KEY (`ID_kit`) REFERENCES `Kit`(`ID_kit`);
+
+ALTER TABLE `Conforma_kit` ADD CONSTRAINT `Conforma_kit_fk0` FOREIGN KEY (`ID_kit`) REFERENCES `Kit`(`ID_kit`);
+
+ALTER TABLE `Conforma_kit` ADD CONSTRAINT `Conforma_kit_fk1` FOREIGN KEY (`ID_material`) REFERENCES `Material`(`ID_material`);
+
+ALTER TABLE `Pals` ADD CONSTRAINT `Pals_fk0` FOREIGN KEY (`ID_material`) REFERENCES `Material`(`ID_material`);
+
+ALTER TABLE `Esquis` ADD CONSTRAINT `Esquis_fk0` FOREIGN KEY (`ID_material`) REFERENCES `Material`(`ID_material`);
+
+ALTER TABLE `Botes` ADD CONSTRAINT `Botes_fk0` FOREIGN KEY (`ID_material`) REFERENCES `Material`(`ID_material`);
+
+ALTER TABLE `Lloga_material` ADD CONSTRAINT `Lloga_material_fk0` FOREIGN KEY (`DNI`) REFERENCES `Usuaris`(`DNI`);
+
+ALTER TABLE `Lloga_material` ADD CONSTRAINT `Lloga_material_fk1` FOREIGN KEY (`ID_material`) REFERENCES `Material`(`ID_material`);
+
+
+
+
+
+
+
+
+
