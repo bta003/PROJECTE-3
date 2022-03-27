@@ -137,6 +137,11 @@ CREATE TABLE `Usuaris_web` (
     PRIMARY KEY (`email`)
 );
 
+
+INSERT INTO Material(Marca, Model, Vegades_utilitzat, Preu, Imatge, Estat) VALUES
+('marca1', 'model1', 0, 300, 'imatge1.jpg', true);
+
+
 ALTER TABLE `Lloga_kit` ADD CONSTRAINT `Lloga_kit_fk0` FOREIGN KEY (`DNI`) REFERENCES `Usuaris`(`DNI`);
 
 ALTER TABLE `Lloga_kit` ADD CONSTRAINT `Lloga_kit_fk1` FOREIGN KEY (`ID_kit`) REFERENCES `Kit`(`ID_kit`);
