@@ -192,6 +192,13 @@ INSERT INTO Usuaris (DNI, Nom, Cognoms, email, Telefon) VALUES
 ('23706082M', 'Matías', 'Jurado Rodríguez', 'matiasjr.aif1@alumnescostafreda.cat',  634599574);
 
 
+INSERT INTO Federats (DNI, Num_federacio, Nivell) VALUES
+('47137446G', '463728', 'Alt'),
+('67900534A', '463728', 'Alt'),
+('03595023P', '463728', 'Mig');
+
+
+
 INSERT INTO Cursos (Nom, Descripcio) VALUES
 ('nom1', 'descripcio1'),
 ('nom2', 'descripcio2'),
