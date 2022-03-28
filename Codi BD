@@ -12,6 +12,24 @@ CREATE TABLE `Usuaris` (
 	PRIMARY KEY (`DNI`)
 );
 
+CREATE TABLE `Federats` (
+	`DNI` varchar(9) NOT NULL,
+	`Num_federacio` varchar(6) NOT NULL,
+	`Nivell` varchar(5) NOT NULL,
+	PRIMARY KEY (`DNI`)
+);
+
+CREATE TABLE `Normals` (
+	`DNI` varchar(9) NOT NULL,
+	PRIMARY KEY (`DNI`)
+);
+
+CREATE TABLE `Familia_nombrosa` (
+	`DNI` varchar(9) NOT NULL,
+	`Num_carnet` varchar(14) NOT NULL,
+	PRIMARY KEY (`DNI`)
+);
+
 CREATE TABLE `Cursos` (
 	`ID_curs` INT NOT NULL AUTO_INCREMENT,
 	`Nom` varchar(30) NOT NULL,
@@ -55,24 +73,6 @@ CREATE TABLE `Realitza` (
 	`ID_curs` INT NOT NULL,
 	`Preu_hora` DECIMAL(3) NOT NULL,
 	`Num_hores` INT(2) NOT NULL,
-	PRIMARY KEY (`DNI`)
-);
-
-CREATE TABLE `Federats` (
-	`DNI` varchar(9) NOT NULL,
-	`Num_federacio` varchar(6) NOT NULL,
-	`Nivell` varchar(5) NOT NULL,
-	PRIMARY KEY (`DNI`)
-);
-
-CREATE TABLE `Normals` (
-	`DNI` varchar(9) NOT NULL,
-	PRIMARY KEY (`DNI`)
-);
-
-CREATE TABLE `Familia_nombrosa` (
-	`DNI` varchar(9) NOT NULL,
-	`Num_carnet` varchar(14) NOT NULL,
 	PRIMARY KEY (`DNI`)
 );
 
@@ -192,8 +192,10 @@ INSERT INTO Usuaris (DNI, Nom, Cognoms, email, Telefon) VALUES
 ('23706082M', 'Matías', 'Jurado Rodríguez', 'matiasjr.aif1@alumnescostafreda.cat',  634599574);
 
 
-#INSERT INTO Cursos (Nom, Descripcio) VALUES
-#();
+INSERT INTO Cursos (Nom, Descripcio) VALUES
+('nom1', 'descripcio1'),
+('nom2', 'descripcio2'),
+('nom3', 'descripcio3');
 
 
 #INSERT INTO Colectius (ID_curs) VALUES
@@ -204,8 +206,10 @@ INSERT INTO Usuaris (DNI, Nom, Cognoms, email, Telefon) VALUES
 #();
 
 
-#INSERT INTO Competicio (ID_curs, nivell) VALUES
-#();
+INSERT INTO Competicio (ID_curs, nivell) VALUES
+(1, 'baix'),
+(2, 'mig'),
+(3, 'alt');
 
 
 INSERT INTO Monitors (DNI, Nom, Cognoms, Telefon, email) VALUES
@@ -218,8 +222,12 @@ INSERT INTO Monitors (DNI, Nom, Cognoms, Telefon, email) VALUES
 INSERT INTO  Ensenya (DNI, ID_curs) VALUES
 ('84701532F', 1),
 ('21374897P', 2),
-('81240504L', 3),
-('99027727P', 4);
+('81240504L', 3);
+
+
+INSERT INTO Realitza (DNI, ID_curs, Preu_hora, Num_hores) VALUES
+('47137446G', 1, 20, 4),
+('67900534A', 3, 25, 3);
 
 
 INSERT INTO Material(Marca, Model, Vegades_utilitzat, Preu, Imatge, Estat) VALUES
