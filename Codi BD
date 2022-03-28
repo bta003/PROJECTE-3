@@ -5,8 +5,9 @@ use esqui;
 CREATE TABLE `Usuaris` (
 	`DNI` varchar(9) NOT NULL UNIQUE,
 	`Nom` varchar(20) NOT NULL,
+    `Cognoms` varchar(40) NOT NULL,
 	`email` varchar(60) NOT NULL,
-	`Cognoms` varchar(40) NOT NULL,
+    `Telefon` int(9) NOT NULL,
 	`Imatge` varchar(60) NOT NULL DEFAULT '/img/defaultuser',
 	PRIMARY KEY (`DNI`)
 );
@@ -101,7 +102,7 @@ CREATE TABLE `Material` (
 	`Model` varchar(30) NOT NULL,
 	`Vegades_utilitzat` INT(2) NOT NULL,
 	`Preu` DECIMAL(6) NOT NULL,
-	`Imatge` varchar(60) NOT NULL,
+	`Imatge` varchar(60) NOT NULL DEFAULT '/img/defaultmaterial',
 	`Estat` BOOLEAN NOT NULL DEFAULT true,
 	PRIMARY KEY (`ID_material`)
 );
@@ -138,8 +139,7 @@ CREATE TABLE `Usuaris_web` (
 );
 
 
-INSERT INTO Material(Marca, Model, Vegades_utilitzat, Preu, Imatge, Estat) VALUES
-('marca1', 'model1', 0, 300, 'imatge1.jpg', true);
+
 
 
 ALTER TABLE `Lloga_kit` ADD CONSTRAINT `Lloga_kit_fk0` FOREIGN KEY (`DNI`) REFERENCES `Usuaris`(`DNI`);
@@ -184,9 +184,45 @@ ALTER TABLE `Familia_nombrosa` ADD CONSTRAINT `Familia_nombrosa_fk0` FOREIGN KEY
 
 
 
+INSERT INTO Usuaris (DNI, Nom, Cognoms, email, Telefon) VALUES
+('47137446G', 'Bruno', 'Tomé Arias', 'brunota.dam1@alumnescostafreda.cat', 785883790),
+('67900534A', 'Daniel', 'Alcobé Orellana', 'danielao.dam1@alumnescostafreda.cat',  622914709),
+('03595023P', 'Pau', 'Rubio Silva', 'paurs.dam1@alumnescostafreda.cat',  634133599),
+('94334295W', 'Sergi', 'Florensa Rojo', 'sergifr.dam1@alumnescostafreda.cat',  688676547),
+('23706082M', 'Matías', 'Jurado Rodríguez', 'matiasjr.aif1@alumnescostafreda.cat',  634599574);
 
 
+#INSERT INTO Cursos (Nom, Descripcio) VALUES
+#();
 
 
-	
+#INSERT INTO Colectius (ID_curs) VALUES
+#();
+
+
+#INSERT INTO Individuals (ID_curs) VALUES
+#();
+
+
+#INSERT INTO Competicio (ID_curs, nivell) VALUES
+#();
+
+
+INSERT INTO Monitors (DNI, Nom, Cognoms, Telefon, email) VALUES
+('84701532F', 'María', 'Jesús Pla', 631588821, 'mariajp@eskydam.com'),
+('21374897P', 'Ignacio', 'Segovia Ayala', 635851777, 'ignaciosa@eskydam.com'),
+('81240504L', 'Joan', 'Antoni Fernández', 658183599, 'joanaf@eskydam.com'),
+('99027727P', 'Yolanda', 'Solsona Fernandez', 634621463, 'yolandasf@eskydam.com');
+
+
+INSERT INTO  Ensenya (DNI, ID_curs) VALUES
+('84701532F', 1),
+('21374897P', 2),
+('81240504L', 3),
+('99027727P', 4);
+
+
+INSERT INTO Material(Marca, Model, Vegades_utilitzat, Preu, Imatge, Estat) VALUES
+('marca1', 'model1', 0, 300, 'imatge1.jpg', true);
+
 
