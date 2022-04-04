@@ -238,6 +238,13 @@ INSERT INTO Realitza (DNI, ID_curs, Preu_hora, Num_hores) VALUES
 
 
 INSERT INTO Material(Marca, Model, Vegades_utilitzat, Preu, Imatge, Estat) VALUES
-('marca1', 'model1', 0, 300, 'imatge1.jpg', true);
-
+('Salomon', 'MAX 8 S', 0, 349.99, 'imatge1.jpg', true),
+('Dynastar', 'Speed Team Pro Open', 0, 239.91, 'imatge2.jpg', true),
+('Wedze', 'FR 500 SLASH 100 H', 0, 259.99, 'imatge3.jpg', true),
+('Wedze', 'MT90', 0, 649.99, 'imatge4.jpg', true),
+('Dynastar', 'Legend W84', 0, 390.72, 'imatge5.jpg', true),
+('Atomic', 'REDSTER G7 X12', 0, 759.99, 'imatge6.jpg', true),
+('Rossignol', 'Blackops Sender Freeride', 0, 569.99, 'imatge7.jpg', true),
+('Wedze', 'FREERIDE, WEDZE FR 500 SLASH 100', 0, 359.99, 'imatge8.jpg', true),
+('Dynastar', 'Legend W 84 Xp', 0, 403.13, 'imatge9.jpg', true);
 
