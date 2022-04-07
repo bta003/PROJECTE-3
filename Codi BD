@@ -55,6 +55,7 @@ CREATE TABLE `Competicio` (
 
 CREATE TABLE `Monitors` (
 	`DNI` varchar(9) NOT NULL,
+	`NSS` int(9) NOT NULL,
 	`Nom` varchar(20) NOT NULL,
 	`Cognoms` varchar(40) NOT NULL,
 	`Telefon` INT(9) NOT NULL,
@@ -219,11 +220,11 @@ INSERT INTO Competicio (ID_curs, nivell) VALUES
 (3, 'alt');
 
 
-INSERT INTO Monitors (DNI, Nom, Cognoms, Telefon, email) VALUES
-('84701532F', 'María', 'Jesús Pla', 631588821, 'mariajp@eskydam.com'),
-('21374897P', 'Ignacio', 'Segovia Ayala', 635851777, 'ignaciosa@eskydam.com'),
-('81240504L', 'Joan', 'Antoni Fernández', 658183599, 'joanaf@eskydam.com'),
-('99027727P', 'Yolanda', 'Solsona Fernandez', 634621463, 'yolandasf@eskydam.com');
+INSERT INTO Monitors (DNI, NSS, Nom, Cognoms, Telefon, email) VALUES
+('84701532F', '487263677','María', 'Jesús Pla', 631588821, 'mariajp@eskydam.com'),
+('21374897P', '238946483','Ignacio', 'Segovia Ayala', 635851777, 'ignaciosa@eskydam.com'),
+('81240504L', '001058638','Joan', 'Antoni Fernández', 658183599, 'joanaf@eskydam.com'),
+('99027727P', '519454651','Yolanda', 'Solsona Fernandez', 634621463, 'yolandasf@eskydam.com');
 
 
 INSERT INTO  Ensenya (DNI, ID_curs) VALUES
@@ -246,5 +247,22 @@ INSERT INTO Material(Marca, Model, Vegades_utilitzat, Preu, Imatge, Estat) VALUE
 ('Atomic', 'REDSTER G7 X12', 0, 759.99, 'imatge6.jpg', true),
 ('Rossignol', 'Blackops Sender Freeride', 0, 569.99, 'imatge7.jpg', true),
 ('Wedze', 'FREERIDE, WEDZE FR 500 SLASH 100', 0, 359.99, 'imatge8.jpg', true),
-('Dynastar', 'Legend W 84 Xp', 0, 403.13, 'imatge9.jpg', true);
-
+('Dynastar', 'Legend W 84 Xp', 0, 403.13, 'imatge9.jpg', true),
+('Leki', 'AirFoil 3D', 0, 69.95, 'imatgea1.jpg', true)
+('Scott', 'SRS Scott', 0, 75, 'imatgea2.jpg', true)
+('Wedze', 'FR950 LIGHT', 0, 39.99, 'imatgea3.jpg', true)
+('Oneway', 'DIAMOND 14', 0, 69.99, 'imatgea4.jpg', true)
+('Kerma', 'Vector Hybrid 6', 0, 51.99, 'imatgea5.jpg', true)
+('Inovik', 'XC S POLE 150', 0, 29.99, 'imatgea6.jpg', true)
+('Scott', '540 P-lite Black Ultra Lime', 0, 28.13, 'imatgea7.jpg', true)
+('Rossignol', 'Tactic Jr Grey - 75', 0, 16.13, 'imatgea8.jpg', true)
+('K2', 'Boys Sprout', 0, 24.10, 'imatgea9.jpg', true)
+('', '', 0, , 'imatgeb1.jpg', true)
+('', '', 0, , 'imatgeb2.jpg', true)
+('', '', 0, , 'imatgeb3.jpg', true)
+('', '', 0, , 'imatgeb4.jpg', true)
+('', '', 0, , 'imatgeb5.jpg', true)
+('', '', 0, , 'imatgeb6.jpg', true)
+('', '', 0, , 'imatgeb7.jpg', true)
+('', '', 0, , 'imatgeb8.jpg', true)
+('', '', 0, , 'imatgeb9.jpg', true)
