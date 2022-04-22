@@ -86,8 +86,8 @@ CREATE TABLE `Lloga_kit` (
 
 CREATE TABLE `Kit` (
 	`ID_kit` INT NOT NULL AUTO_INCREMENT,
-	`Preu` DECIMAL(6) NOT NULL,
-	`Vegades_guardat` INT(6) NOT NULL,
+	`Preu` INT(6) NOT NULL,
+	`Vegades_guardat` INT(6) NOT NULL DEFAULT 0,
 	PRIMARY KEY (`ID_kit`)
 );
 
@@ -102,7 +102,7 @@ CREATE TABLE `Material` (
 	`Marca` varchar(20) NOT NULL,
 	`Model` varchar(30) NOT NULL,
 	`Vegades_utilitzat` INT(2) NOT NULL,
-	`Preu` DECIMAL(6) NOT NULL,
+	`Preu` INT(6) NOT NULL,
 	`Imatge` varchar(60) NOT NULL DEFAULT '/img/defaultmaterial',
 	`Estat` BOOLEAN NOT NULL DEFAULT true,
 	PRIMARY KEY (`ID_material`)
@@ -191,6 +191,10 @@ INSERT INTO Usuaris (DNI, Nom, Cognoms, email, Telefon) VALUES
 ('03595023P', 'Pau', 'Rubio Silva', 'paurs.dam1@alumnescostafreda.cat',  634133599),
 ('94334295W', 'Sergi', 'Florensa Rojo', 'sergifr.dam1@alumnescostafreda.cat',  688676547),
 ('23706082M', 'Matías', 'Jurado Rodríguez', 'matiasjr.aif1@alumnescostafreda.cat',  634599574);
+
+
+INSERT INTO Usuaris_web (email, nomusuari, contrasenya) VALUES
+('brunota.dam1@alumnescostafreda.cat', 'BrunoTA', md5('1234'));
 
 
 INSERT INTO Federats (DNI, Num_federacio, Nivell) VALUES
@@ -302,4 +306,34 @@ INSERT INTO Botes(ID_material, Talla) VALUES
 (7, 127),
 (8, 127),
 (9, 127);
+
+#------------------------------KITS----------------------
+
+DELIMITER //
+CREATE PROCEDURE crear_Kit(IN ID_mat1 INT(3), IN ID_mat2 INT(3), IN ID_mat3 INT(3))
+BEGIN
+	DECLARE Preu1 INT;
+    DECLARE Preu2 INT;
+    DECLARE Preu3 INT;
+    DECLARE PreuTotal INT;
+    
+	SET Preu1 = (SELECT Preu
+				 FROM Material
+                 WHERE ID_material = ID_mat1);
+                 
+	SET Preu2 = (SELECT Preu
+				 FROM Material
+                 WHERE ID_material = ID_mat2);
+                 
+	SET Preu3 = (SELECT Preu
+				 FROM Material
+                 WHERE ID_material = ID_mat3);
+                 
+	SET PreuTotal := Preu1 + Preu2 + Preu3;
+    
+    INSERT INTO Kit (Preu, Vegades_guardat) VALUES
+    ((SELECT PreuTotal), 0);
+END
+//
+
 
