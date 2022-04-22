@@ -246,7 +246,7 @@ INSERT INTO Material(Marca, Model, Vegades_utilitzat, Preu, Imatge, Estat) VALUE
 ('Dynastar', 'Legend W84', 0, 390.72, 'imatge5.jpg', true),
 ('Atomic', 'REDSTER G7 X12', 0, 759.99, 'imatge6.jpg', true),
 ('Rossignol', 'Blackops Sender Freeride', 0, 569.99, 'imatge7.jpg', true),
-('Wedze', 'FREERIDE, WEDZE FR 500 SLASH 100', 0, 359.99, 'imatge8.jpg', true),
+('Wedze', 'FR 500 SLASH 100', 0, 359.99, 'imatge8.jpg', true),
 ('Dynastar', 'Legend W 84 Xp', 0, 403.13, 'imatge9.jpg', true),
 ('Leki', 'AirFoil 3D', 0, 69.95, 'imatgea1.jpg', true),
 ('Scott', 'SRS Scott', 0, 75, 'imatgea2.jpg', true),
@@ -261,7 +261,7 @@ INSERT INTO Material(Marca, Model, Vegades_utilitzat, Preu, Imatge, Estat) VALUE
 ('Atomic', 'Hawx Magna 100', 0, 179.95, 'imatgeb2.jpg', true),
 ('Salomon', 'QST Access 90 CH', 0, 364.65, 'imatgeb3.jpg', true),
 ('Atomic', 'Hawx Ultra 110 S GW', 0, 364.65, 'imatgeb4.jpg', true),
-('Nordica', 'Sportmachine 85', 0, , 'imatgeb5.jpg', true),
+('Nordica', 'Sportmachine 85', 0, 239.99, 'imatgeb5.jpg', true),
 ('Atomic', 'Hawx Prime W', 0, 155.40, 'imatgeb6.jpg', true),
 ('Dalbello', 'Moro MX 90', 0, 280, 'imatgeb7.jpg', true),
 ('Rossignol', 'Alltrack 90', 0, 269, 'imatgeb8.jpg', true),
@@ -302,3 +302,4 @@ INSERT INTO Botes(ID_material, Talla) VALUES
 (7, 127),
 (8, 127),
 (9, 127);
+
