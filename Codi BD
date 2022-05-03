@@ -340,11 +340,14 @@ BEGIN
     
     
     if ((SELECT Vegades_utilitzat FROM Material WHERE ID_material = ID_mat1) < 10 AND (SELECT Vegades_utilitzat FROM Material WHERE ID_material = ID_mat2) < 10 AND (SELECT Vegades_utilitzat FROM Material WHERE ID_material = ID_mat3) < 10) THEN 
+    #SI ALGUN DELS COMPONENTS DEL KIT S'HA UTILITZAT 10 VEGADES NI GENERA NI ACTUALITZA CAP KIT NI MATERIAL
+  
 	if not exists (select * 
 				   from Conforma_kit 
                    where ID_material1 = ID_mat1
                    AND ID_material2 = ID_mat2
                    AND ID_material3 = ID_mat3) then
+   #SI EL KIT NO EXISTEIX SEGUEIX I EL CREA, SI NO, LI AUGMENTA EL CONTADOR DE VEGADES UTILITZAT
                    
 		INSERT INTO Kit (Preu, Vegades_guardat) VALUES
 		((SELECT PreuTotal), 1);
@@ -355,6 +358,7 @@ BEGIN
 	else
 		update Kit set Vegades_guardat = Vegades_guardat + 1 where ID_kit = (SELECT ID_kit FROM Conforma_kit WHERE ID_material1 = ID_mat1 AND ID_material2 = ID_mat2 AND ID_material3 = ID_mat3);
     end if;
+    ##SI TOTS ELS ELEMENTS DEL KIT HAN SIGUT UTILITZATS MENYS DE 10 VEGADES AUGMENTA EL CONTADOR DE VEGADES UTILITAT
 		UPDATE Material SET Vegades_utilitzat = Vegades_utilitzat+1 WHERE ID_material = ID_mat1;
 		UPDATE Material SET Vegades_utilitzat = Vegades_utilitzat+1 WHERE ID_material = ID_mat2;
 		UPDATE Material SET Vegades_utilitzat = Vegades_utilitzat+1 WHERE ID_material = ID_mat3;
