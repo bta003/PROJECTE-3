@@ -345,7 +345,7 @@ BEGIN
                    AND ID_material3 = ID_mat3) then
                    
 		INSERT INTO Kit (Preu, Vegades_guardat) VALUES
-		((SELECT PreuTotal), 0);
+		((SELECT PreuTotal), 1);
     
 		INSERT INTO Conforma_kit (ID_kit, ID_material1, ID_material2, ID_material3) VALUES
 		((SELECT ID_kit FROM Kit ORDER BY ID_kit DESC limit 1), ID_mat1, ID_mat2, ID_mat3);
@@ -353,5 +353,10 @@ BEGIN
 	else
 		update Kit set Vegades_guardat = Vegades_guardat + 1 where ID_kit = (SELECT ID_kit FROM Conforma_kit WHERE ID_material1 = ID_mat1 AND ID_material2 = ID_mat2 AND ID_material3 = ID_mat3);
     end if;
+    
+    UPDATE Material SET Vegades_utilitzat = Vegades_utilitzat+1 WHERE ID_material = ID_mat1;
+    UPDATE Material SET Vegades_utilitzat = Vegades_utilitzat+1 WHERE ID_material = ID_mat2;
+    UPDATE Material SET Vegades_utilitzat = Vegades_utilitzat+1 WHERE ID_material = ID_mat3;
+    
 END
 //
