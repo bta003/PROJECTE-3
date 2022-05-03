@@ -93,8 +93,10 @@ CREATE TABLE `Kit` (
 
 CREATE TABLE `Conforma_kit` (
 	`ID_kit` INT NOT NULL,
-	`ID_material` INT NOT NULL,
-	PRIMARY KEY (`ID_kit`)
+	`ID_material1` INT NOT NULL,
+    `ID_material2` INT NOT NULL,
+    `ID_material3` INT NOT NULL,
+    PRIMARY KEY (`ID_kit`)
 );
 
 CREATE TABLE `Material` (
@@ -149,7 +151,11 @@ ALTER TABLE `Lloga_kit` ADD CONSTRAINT `Lloga_kit_fk1` FOREIGN KEY (`ID_kit`) RE
 
 ALTER TABLE `Conforma_kit` ADD CONSTRAINT `Conforma_kit_fk0` FOREIGN KEY (`ID_kit`) REFERENCES `Kit`(`ID_kit`);
 
-ALTER TABLE `Conforma_kit` ADD CONSTRAINT `Conforma_kit_fk1` FOREIGN KEY (`ID_material`) REFERENCES `Material`(`ID_material`);
+ALTER TABLE `Conforma_kit` ADD CONSTRAINT `Conforma_kit_fk1` FOREIGN KEY (`ID_material1`) REFERENCES `Material`(`ID_material`);
+
+ALTER TABLE `Conforma_kit` ADD CONSTRAINT `Conforma_kit_fk2` FOREIGN KEY (`ID_material2`) REFERENCES `Material`(`ID_material`);
+
+ALTER TABLE `Conforma_kit` ADD CONSTRAINT `Conforma_kit_fk3` FOREIGN KEY (`ID_material3`) REFERENCES `Material`(`ID_material`);
 
 ALTER TABLE `Pals` ADD CONSTRAINT `Pals_fk0` FOREIGN KEY (`ID_material`) REFERENCES `Material`(`ID_material`);
 
@@ -312,6 +318,7 @@ INSERT INTO Botes(ID_material, Talla) VALUES
 DELIMITER //
 CREATE PROCEDURE crear_Kit(IN ID_mat1 INT(3), IN ID_mat2 INT(3), IN ID_mat3 INT(3))
 BEGIN
+    
 	DECLARE Preu1 INT;
     DECLARE Preu2 INT;
     DECLARE Preu3 INT;
@@ -331,9 +338,20 @@ BEGIN
                  
 	SET PreuTotal := Preu1 + Preu2 + Preu3;
     
-    INSERT INTO Kit (Preu, Vegades_guardat) VALUES
-    ((SELECT PreuTotal), 0);
+	if not exists (select * 
+				   from Conforma_kit 
+                   where ID_material1 = ID_mat1
+                   AND ID_material2 = ID_mat2
+                   AND ID_material3 = ID_mat3) then
+                   
+		INSERT INTO Kit (Preu, Vegades_guardat) VALUES
+		((SELECT PreuTotal), 0);
+    
+		INSERT INTO Conforma_kit (ID_kit, ID_material1, ID_material2, ID_material3) VALUES
+		((SELECT ID_kit FROM Kit ORDER BY ID_kit DESC limit 1), ID_mat1, ID_mat2, ID_mat3);
+        
+	else
+		update Kit set Vegades_guardat = Vegades_guardat + 1 where ID_kit = (SELECT ID_kit FROM Conforma_kit WHERE ID_material1 = ID_mat1 AND ID_material2 = ID_mat2 AND ID_material3 = ID_mat3);
+    end if;
 END
 //
-
-
