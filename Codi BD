@@ -33,7 +33,10 @@ CREATE TABLE `Familia_nombrosa` (
 CREATE TABLE `Cursos` (
 	`ID_curs` INT NOT NULL AUTO_INCREMENT,
 	`Nom` varchar(30) NOT NULL,
+    `Preu_hora` int(3) NOT NULL,
 	`Descripcio` varchar(255) NOT NULL,
+    `Data_inici` date NOT NULL,
+    `Hora_inici` date NOT NULL,
 	PRIMARY KEY (`ID_curs`)
 );
 
@@ -69,18 +72,11 @@ CREATE TABLE `Ensenya` (
 	PRIMARY KEY (`DNI`)
 );
 
-CREATE TABLE `Realitza` (
+CREATE TABLE `Lloga_curs` (
 	`DNI` varchar(9) NOT NULL,
 	`ID_curs` INT NOT NULL,
-	`Preu_hora` DECIMAL(3) NOT NULL,
 	`Num_hores` INT(2) NOT NULL,
-	PRIMARY KEY (`DNI`)
-);
-
-CREATE TABLE `Lloga_kit` (
-	`DNI` varchar(9) NOT NULL,
-	`ID_kit` INT NOT NULL,
-	`Data` DATE NOT NULL,
+    `Preu_final` INT(5) NOT NULL,
 	PRIMARY KEY (`DNI`)
 );
 
@@ -141,13 +137,16 @@ CREATE TABLE `Usuaris_web` (
     PRIMARY KEY (`email`)
 );
 
+CREATE TABLE `Lloga_kit` (
+	`DNI` varchar(9) NOT NULL,
+	`ID_kit` INT NOT NULL,
+	`Data_guardat` DATE NOT NULL,
+	PRIMARY KEY (`DNI`)
+);
 
 
 
 
-ALTER TABLE `Lloga_kit` ADD CONSTRAINT `Lloga_kit_fk0` FOREIGN KEY (`DNI`) REFERENCES `Usuaris`(`DNI`);
-
-ALTER TABLE `Lloga_kit` ADD CONSTRAINT `Lloga_kit_fk1` FOREIGN KEY (`ID_kit`) REFERENCES `Kit`(`ID_kit`);
 
 ALTER TABLE `Conforma_kit` ADD CONSTRAINT `Conforma_kit_fk0` FOREIGN KEY (`ID_kit`) REFERENCES `Kit`(`ID_kit`);
 
@@ -179,15 +178,19 @@ ALTER TABLE `Ensenya` ADD CONSTRAINT `Ensenya_fk0` FOREIGN KEY (`DNI`) REFERENCE
 
 ALTER TABLE `Ensenya` ADD CONSTRAINT `Ensenya_fk1` FOREIGN KEY (`ID_curs`) REFERENCES `Cursos`(`ID_curs`);
 
-ALTER TABLE `Realitza` ADD CONSTRAINT `Realitza_fk0` FOREIGN KEY (`DNI`) REFERENCES `Usuaris`(`DNI`);
+ALTER TABLE `Lloga_curs` ADD CONSTRAINT `Lloga_curs_fk0` FOREIGN KEY (`DNI`) REFERENCES `Usuaris`(`DNI`);
 
-ALTER TABLE `Realitza` ADD CONSTRAINT `Realitza_fk1` FOREIGN KEY (`ID_curs`) REFERENCES `Cursos`(`ID_curs`);
+ALTER TABLE `Lloga_curs` ADD CONSTRAINT `Lloga_curs_fk1` FOREIGN KEY (`ID_curs`) REFERENCES `Cursos`(`ID_curs`);
 
 ALTER TABLE `Federats` ADD CONSTRAINT `Federats_fk0` FOREIGN KEY (`DNI`) REFERENCES `Usuaris`(`DNI`);
 
 ALTER TABLE `Normals` ADD CONSTRAINT `Normals_fk0` FOREIGN KEY (`DNI`) REFERENCES `Usuaris`(`DNI`);
 
 ALTER TABLE `Familia_nombrosa` ADD CONSTRAINT `Familia_nombrosa_fk0` FOREIGN KEY (`DNI`) REFERENCES `Usuaris`(`DNI`);
+
+ALTER TABLE `Lloga_kit` ADD CONSTRAINT `Lloga_kit_fk0` FOREIGN KEY (`DNI`) REFERENCES `Usuaris`(`DNI`);
+
+ALTER TABLE `Lloga_kit` ADD CONSTRAINT `Lloga_kit_fk1` FOREIGN KEY (`ID_kit`) REFERENCES `Kit`(`ID_kit`);
 
 
 
@@ -197,6 +200,10 @@ INSERT INTO Usuaris (DNI, Nom, Cognoms, email, Telefon) VALUES
 ('03595023P', 'Pau', 'Rubio Silva', 'paurs.dam1@alumnescostafreda.cat',  634133599),
 ('94334295W', 'Sergi', 'Florensa Rojo', 'sergifr.dam1@alumnescostafreda.cat',  688676547),
 ('23706082M', 'Matías', 'Jurado Rodríguez', 'matiasjr.aif1@alumnescostafreda.cat',  634599574);
+
+
+INSERT INTO Familia_nombrosa (DNI, Num_carnet) VALUES
+('47137446G', '22/666666/4444');
 
 
 INSERT INTO Usuaris_web (email, nomusuari, contrasenya) VALUES
@@ -210,18 +217,19 @@ INSERT INTO Federats (DNI, Num_federacio, Nivell) VALUES
 
 
 
-INSERT INTO Cursos (Nom, Descripcio) VALUES
-('nom1', 'descripcio1'),
-('nom2', 'descripcio2'),
-('nom3', 'descripcio3');
+INSERT INTO Cursos (Nom, Preu_hora, Descripcio, Data_inici, Hora_inici) VALUES
+('nom1', 20, 'descripcio1', '2022/05/05', '12:00:00'),
+('nom2', 25, 'descripcio2', '2022/05/06', '12:00:00'),
+('nom3', 22, 'descripcio3', '2022/05/07', '12:00:00');
 
 
-#INSERT INTO Colectius (ID_curs) VALUES
-#();
+INSERT INTO Colectius (ID_curs) VALUES
+(3);
 
 
-#INSERT INTO Individuals (ID_curs) VALUES
-#();
+INSERT INTO Individuals (ID_curs) VALUES
+(1),
+(2);
 
 
 INSERT INTO Competicio (ID_curs, nivell) VALUES
@@ -241,11 +249,6 @@ INSERT INTO  Ensenya (DNI, ID_curs) VALUES
 ('84701532F', 1),
 ('21374897P', 2),
 ('81240504L', 3);
-
-
-INSERT INTO Realitza (DNI, ID_curs, Preu_hora, Num_hores) VALUES
-('47137446G', 1, 20, 4),
-('67900534A', 3, 25, 3);
 
 
 INSERT INTO Material(Marca, Model, Vegades_utilitzat, Preu, Imatge, Estat) VALUES
@@ -312,6 +315,8 @@ INSERT INTO Botes(ID_material, Talla) VALUES
 (25, 25),
 (26, 25),
 (27, 27);
+
+
 
 #---------------PROCEDIMENT PER CREAR KITS----------------------
 
@@ -383,3 +388,41 @@ BEGIN
 
 END
 //
+
+
+#------------TRIGGER PER GUARDAR EL TOTAL DE KITS QUE S'HA LLOGAT AL LLARG DEL DIA---------------
+
+DELIMITER //
+CREATE FUNCTION calcularPreu(_dni VARCHAR(9), _idcurs INT, _numhores INT(1)) RETURNS decimal(20)
+BEGIN
+  DECLARE preuhoraf decimal;
+  DECLARE preutotal decimal;
+  
+  if exists (SELECT * FROM Individuals WHERE ID_curs=_idcurs) then
+	IF _numhores IN (1, 2) THEN
+	SET preuhoraf = (SELECT Preu_hora FROM Cursos WHERE ID_curs=_idcurs)*0.8;
+
+   ELSEIF _numhores = 3 THEN
+   SET preuhoraf = (SELECT Preu_hora FROM Cursos WHERE ID_curs=_idcurs)*0.7;
+   
+   ELSEIF _numhores = 6 THEN
+   SET preuhoraf = (SELECT Preu_hora FROM Cursos WHERE ID_curs=_idcurs)*0.5;
+
+   END IF;
+	 SET preutotal= preuhoraf * _numhores;
+  end if;
+  
+  RETURN preutotal;
+END
+//
+
+call crear_Kit(1, 11, 23);
+
+INSERT INTO Lloga_kit(DNI, ID_kit, Data_guardat) VALUES
+('47137446G', 1, (SELECT CURDATE()));
+
+
+INSERT INTO Lloga_curs (DNI, ID_curs, Num_hores, Preu_final) VALUES
+('47137446G', 1, 20, (SELECT calcularPreu('47137446G', 1, 2))),
+('67900534A', 3, 25, (SELECT calcularPreu('47137446G', 1, 6)));
+
