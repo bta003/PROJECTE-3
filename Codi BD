@@ -76,7 +76,7 @@ CREATE TABLE `Lloga_curs` (
 	`DNI` varchar(9) NOT NULL,
 	`ID_curs` INT NOT NULL,
 	`Num_hores` INT(2) NOT NULL,
-    `Preu_final` INT(5) NOT NULL,
+    `Preu_final` DECIMAL(5) NOT NULL,
 	PRIMARY KEY (`DNI`)
 );
 
@@ -202,10 +202,6 @@ INSERT INTO Usuaris (DNI, Nom, Cognoms, email, Telefon) VALUES
 ('23706082M', 'Matías', 'Jurado Rodríguez', 'matiasjr.aif1@alumnescostafreda.cat',  634599574);
 
 
-INSERT INTO Familia_nombrosa (DNI, Num_carnet) VALUES
-('47137446G', '22/666666/4444');
-
-
 INSERT INTO Usuaris_web (email, nomusuari, contrasenya) VALUES
 ('brunota.dam1@alumnescostafreda.cat', 'BrunoTA', md5('1234'));
 
@@ -216,20 +212,23 @@ INSERT INTO Federats (DNI, Num_federacio, Nivell) VALUES
 ('03595023P', '463728', 'Mig');
 
 
+INSERT INTO Familia_nombrosa (DNI, Num_carnet) VALUES
+('47137446G', '22/666666/4444');
+
 
 INSERT INTO Cursos (Nom, Preu_hora, Descripcio, Data_inici, Hora_inici) VALUES
 ('nom1', 20, 'descripcio1', '2022/05/05', '12:00:00'),
 ('nom2', 25, 'descripcio2', '2022/05/06', '12:00:00'),
-('nom3', 22, 'descripcio3', '2022/05/07', '12:00:00');
+('nom3', 22, 'descripcio3', '2022/05/07', '12:00:00'),
+('nom4', 15, 'descripcio4', '2022/05/08', '12:00:00');
 
 
-INSERT INTO Colectius (ID_curs) VALUES
-(3);
+#INSERT INTO Colectius (ID_curs) VALUES
+#();
 
 
 INSERT INTO Individuals (ID_curs) VALUES
-(1),
-(2);
+(4);
 
 
 INSERT INTO Competicio (ID_curs, nivell) VALUES
@@ -392,26 +391,60 @@ END
 
 #------------TRIGGER PER GUARDAR EL TOTAL DE KITS QUE S'HA LLOGAT AL LLARG DEL DIA---------------
 
+
+
+
+#------------FUNCIO PER CONTROLAR QUE NOMES ELS USUARIS FEDERATS PUGUIN LLOGAR UN CURS DE COMPETICIO---------------
+
+
+
+
+
+#------------FUNCIO PER CALCULAR EL PREU FINAL DEL CURS DEPENENT DEL TIPUS DE CURS I USUARI---------------
+
 DELIMITER //
 CREATE FUNCTION calcularPreu(_dni VARCHAR(9), _idcurs INT, _numhores INT(1)) RETURNS decimal(20)
 BEGIN
   DECLARE preuhoraf decimal;
   DECLARE preutotal decimal;
   
+  #-----------CURSOS INDIVIDUALS-----------
+  
   if exists (SELECT * FROM Individuals WHERE ID_curs=_idcurs) then
+	#SI LLOGA UN CURS 1 O 2 HORES APLICA UN DESCOMPTE DEL 20%
 	IF _numhores IN (1, 2) THEN
-	SET preuhoraf = (SELECT Preu_hora FROM Cursos WHERE ID_curs=_idcurs)*0.8;
-
-   ELSEIF _numhores = 3 THEN
-   SET preuhoraf = (SELECT Preu_hora FROM Cursos WHERE ID_curs=_idcurs)*0.7;
-   
-   ELSEIF _numhores = 6 THEN
-   SET preuhoraf = (SELECT Preu_hora FROM Cursos WHERE ID_curs=_idcurs)*0.5;
+		SET preuhoraf = (SELECT Preu_hora FROM Cursos WHERE ID_curs=_idcurs)*0.8;
+	#SI LLOGA UN CURS 3 HORES APLICA UN DESCOMPTE DEL 30%
+	ELSEIF _numhores = 3 THEN
+		SET preuhoraf = (SELECT Preu_hora FROM Cursos WHERE ID_curs=_idcurs)*0.7;
+	#SI LLOGA UN CURS 6 HORES APLICA UN DESCOMPTE DEL 50%
+	ELSEIF _numhores = 6 THEN
+		SET preuhoraf = (SELECT Preu_hora FROM Cursos WHERE ID_curs=_idcurs)*0.5;
 
    END IF;
 	 SET preutotal= preuhoraf * _numhores;
-  end if;
+     
+  #-----------CURSOS COLECTIUS-----------
   
+  ELSEif exists (SELECT * FROM Colectius WHERE ID_curs=_idcurs) then
+	if exists (SELECT * FROM Familia_nombrosa WHERE DNI=_dni) then
+		#SI TE CARNET DE FAMILIA NOMBROSA SE LI APLICA UN DESCOMPTE DEL 40%
+		SET preuhoraf = (SELECT Preu_hora FROM Cursos WHERE ID_curs=_idcurs)*0.6; 
+        SET preutotal= preuhoraf * _numhores;
+        #SI NO EL TE NO SE LI APLICA CAP DESCOMPTE
+	else
+		SET preutotal=_numhores*(SELECT Preu_hora FROM Cursos WHERE ID_curs=_idcurs);
+    end if;
+    
+#-----------CURSOS DE COMPETICIO-----------
+    
+  ELSEif exists (SELECT * FROM Competicio WHERE ID_curs=_idcurs) then
+	#el preu dels equiadors federats
+	if exists (SELECT * FROM Federats WHERE DNI=_dni) then
+		SET preutotal=_numhores*(SELECT Preu_hora FROM Cursos WHERE ID_curs=_idcurs);	
+	end if;
+  end if;
+
   RETURN preutotal;
 END
 //
@@ -423,6 +456,6 @@ INSERT INTO Lloga_kit(DNI, ID_kit, Data_guardat) VALUES
 
 
 INSERT INTO Lloga_curs (DNI, ID_curs, Num_hores, Preu_final) VALUES
-('47137446G', 1, 20, (SELECT calcularPreu('47137446G', 1, 2))),
-('67900534A', 3, 25, (SELECT calcularPreu('47137446G', 1, 6)));
+('47137446G', 1, 2, (SELECT calcularPreu('47137446G', 1, 2))),
+('67900534A', 3, 2, (SELECT calcularPreu('47137446G', 3, 2)));
 
