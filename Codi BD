@@ -207,7 +207,6 @@ INSERT INTO Usuaris_web (email, nomusuari, contrasenya) VALUES
 
 
 INSERT INTO Federats (DNI, Num_federacio, Nivell) VALUES
-('47137446G', '463728', 'Alt'),
 ('67900534A', '463728', 'Alt'),
 ('03595023P', '463728', 'Mig');
 
@@ -394,10 +393,37 @@ END
 
 
 
-#------------FUNCIO PER CONTROLAR QUE NOMES ELS USUARIS FEDERATS PUGUIN LLOGAR UN CURS DE COMPETICIO---------------
+#------------PROCEDIMENT PER CONTROLAR QUE NOMES ELS USUARIS FEDERATS PUGUIN LLOGAR UN CURS DE COMPETICIO---------------
 
 
-
+DELIMITER //
+CREATE PROCEDURE llogarCurs(IN _idcurs INT, IN _dni VARCHAR(9), IN _numhores INT(1))
+BEGIN
+	
+#-----------CURSOS INDIVIDUALS-----------
+  
+  if exists (SELECT * FROM Individuals WHERE ID_curs=_idcurs) then
+	INSERT INTO Lloga_curs (DNI, ID_curs, Num_hores, Preu_final) VALUES 
+    (_dni, _idcurs, _numhores, (SELECT calcularPreu(_dni, _idcurs, _numhores)));
+  END IF;
+     
+  #-----------CURSOS COLECTIUS-----------
+  
+  if exists (SELECT * FROM Colectius WHERE ID_curs=_idcurs) then
+	INSERT INTO Lloga_curs (DNI, ID_curs, Num_hores, Preu_final) VALUES 
+    (_dni, _idcurs, _numhores, (SELECT calcularPreu(_dni, _idcurs, _numhores)));
+  END IF;
+    
+#-----------CURSOS DE COMPETICIO-----------
+    
+if exists (SELECT * FROM Competicio WHERE ID_curs=_idcurs) then
+	if exists (SELECT * FROM Federats WHERE DNI=_dni) then
+		INSERT INTO Lloga_curs (DNI, ID_curs, Num_hores, Preu_final) VALUES 
+		(_dni, _idcurs, _numhores, (SELECT calcularPreu(_dni, _idcurs, _numhores)));
+	end if;
+  end if;
+END
+//
 
 
 #------------FUNCIO PER CALCULAR EL PREU FINAL DEL CURS DEPENENT DEL TIPUS DE CURS I USUARI---------------
@@ -455,7 +481,4 @@ INSERT INTO Lloga_kit(DNI, ID_kit, Data_guardat) VALUES
 ('47137446G', 1, (SELECT CURDATE()));
 
 
-INSERT INTO Lloga_curs (DNI, ID_curs, Num_hores, Preu_final) VALUES
-('47137446G', 1, 2, (SELECT calcularPreu('47137446G', 1, 2))),
-('67900534A', 3, 2, (SELECT calcularPreu('47137446G', 3, 2)));
-
+call llogarCurs(4, '47137446G', 6);
