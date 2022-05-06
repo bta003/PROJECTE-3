@@ -103,6 +103,7 @@ CREATE TABLE `Material` (
 	`Preu` INT(6) NOT NULL,
 	`Imatge` varchar(60) NOT NULL DEFAULT '/img/defaultmaterial',
 	`Estat` BOOLEAN NOT NULL DEFAULT true,
+    `Estoc` INT(6) NOT NULL,
 	PRIMARY KEY (`ID_material`)
 );
 
@@ -126,13 +127,14 @@ CREATE TABLE `Botes` (
 
 CREATE TABLE `Lloga_material` (
 	`DNI` varchar(9) NOT NULL,
-	`ID_material` INT NOT NULL,
-	PRIMARY KEY (`DNI`)
+	`ID_material` INT(7) NOT NULL,
+    `data` DATE NOT NULL
 );
 
 CREATE TABLE `Usuaris_web` (
 	`email` varchar(60) NOT NULL,
 	`nomusuari` varchar(20) NOT NULL,
+    `DNI` varchar(9) NOT NULL,
     `contrasenya` varchar(32) NOT NULL,
     PRIMARY KEY (`email`)
 );
@@ -142,6 +144,12 @@ CREATE TABLE `Lloga_kit` (
 	`ID_kit` INT NOT NULL,
 	`Data_guardat` DATE NOT NULL,
 	PRIMARY KEY (`DNI`)
+);
+
+CREATE TABLE `Kits_dia` (
+	`dia` DATE NOT NULL,
+	`kitsguardatsdia` INT(5) NOT NULL,
+	PRIMARY KEY (`dia`)
 );
 
 
@@ -202,8 +210,8 @@ INSERT INTO Usuaris (DNI, Nom, Cognoms, email, Telefon) VALUES
 ('23706082M', 'Matías', 'Jurado Rodríguez', 'matiasjr.aif1@alumnescostafreda.cat',  634599574);
 
 
-INSERT INTO Usuaris_web (email, nomusuari, contrasenya) VALUES
-('brunota.dam1@alumnescostafreda.cat', 'BrunoTA', md5('1234'));
+INSERT INTO Usuaris_web (email, nomusuari, DNI, contrasenya) VALUES
+('brunota.dam1@alumnescostafreda.cat', 'BrunoTA', '47137446G', md5('1234'));
 
 
 INSERT INTO Federats (DNI, Num_federacio, Nivell) VALUES
@@ -249,34 +257,34 @@ INSERT INTO  Ensenya (DNI, ID_curs) VALUES
 ('81240504L', 3);
 
 
-INSERT INTO Material(Marca, Model, Vegades_utilitzat, Preu, Imatge, Estat) VALUES
-('Salomon', 'MAX 8 S', 0, 349.99, 'imatge1.jpg', true),
-('Dynastar', 'Speed Team Pro Open', 0, 239.91, 'imatge2.jpg', true),
-('Wedze', 'FR 500 SLASH 100 H', 0, 259.99, 'imatge3.jpg', true),
-('Wedze', 'MT90', 0, 649.99, 'imatge4.jpg', true),
-('Dynastar', 'Legend W84', 0, 390.72, 'imatge5.jpg', true),
-('Atomic', 'REDSTER G7 X12', 0, 759.99, 'imatge6.jpg', true),
-('Rossignol', 'Blackops Sender Freeride', 0, 569.99, 'imatge7.jpg', true),
-('Wedze', 'FR 500 SLASH 100', 0, 359.99, 'imatge8.jpg', true),
-('Dynastar', 'Legend W 84 Xp', 0, 403.13, 'imatge9.jpg', true),
-('Leki', 'AirFoil 3D', 0, 69.95, 'imatgea1.jpg', true),
-('Scott', 'SRS Scott', 0, 75, 'imatgea2.jpg', true),
-('Wedze', 'FR950 LIGHT', 0, 39.99, 'imatgea3.jpg', true),
-('Oneway', 'DIAMOND 14', 0, 69.99, 'imatgea4.jpg', true),
-('Kerma', 'Vector Hybrid 6', 0, 51.99, 'imatgea5.jpg', true),
-('Inovik', 'XC S POLE 150', 0, 29.99, 'imatgea6.jpg', true),
-('Scott', '540 P-lite Black Ultra Lime', 0, 28.13, 'imatgea7.jpg', true),
-('Rossignol', 'Tactic Jr Grey - 75', 0, 16.13, 'imatgea8.jpg', true),
-('K2', 'Boys Sprout', 0, 24.10, 'imatgea9.jpg', true),
-('Head', 'Advant Edge 85', 0, 181.30, 'imatgeb1.jpg', true),
-('Atomic', 'Hawx Magna 100', 0, 179.95, 'imatgeb2.jpg', true),
-('Salomon', 'QST Access 90 CH', 0, 364.65, 'imatgeb3.jpg', true),
-('Atomic', 'Hawx Ultra 110 S GW', 0, 364.65, 'imatgeb4.jpg', true),
-('Nordica', 'Sportmachine 85', 0, 239.99, 'imatgeb5.jpg', true),
-('Atomic', 'Hawx Prime W', 0, 155.40, 'imatgeb6.jpg', true),
-('Dalbello', 'Moro MX 90', 0, 280, 'imatgeb7.jpg', true),
-('Rossignol', 'Alltrack 90', 0, 269, 'imatgeb8.jpg', true),
-('Lange', 'XT Free 110', 0, 341.40, 'imatgeb9.jpg', true);
+INSERT INTO Material(Marca, Model, Vegades_utilitzat, Preu, Imatge, Estat, Estoc) VALUES
+('Salomon', 'MAX 8 S', 0, 349.99, 'imatge1.jpg', true, 20),
+('Dynastar', 'Speed Team Pro Open', 0, 239.91, 'imatge2.jpg', true, 20),
+('Wedze', 'FR 500 SLASH 100 H', 0, 259.99, 'imatge3.jpg', true, 20),
+('Wedze', 'MT90', 0, 649.99, 'imatge4.jpg', true, 20),
+('Dynastar', 'Legend W84', 0, 390.72, 'imatge5.jpg', true, 20),
+('Atomic', 'REDSTER G7 X12', 0, 759.99, 'imatge6.jpg', true, 20),
+('Rossignol', 'Blackops Sender Freeride', 0, 569.99, 'imatge7.jpg', true, 20),
+('Wedze', 'FR 500 SLASH 100', 0, 359.99, 'imatge8.jpg', true, 20),
+('Dynastar', 'Legend W 84 Xp', 0, 403.13, 'imatge9.jpg', true, 20),
+('Leki', 'AirFoil 3D', 0, 69.95, 'imatgea1.jpg', true, 20),
+('Scott', 'SRS Scott', 0, 75, 'imatgea2.jpg', true, 20),
+('Wedze', 'FR950 LIGHT', 0, 39.99, 'imatgea3.jpg', true, 20),
+('Oneway', 'DIAMOND 14', 0, 69.99, 'imatgea4.jpg', true, 20),
+('Kerma', 'Vector Hybrid 6', 0, 51.99, 'imatgea5.jpg', true, 20),
+('Inovik', 'XC S POLE 150', 0, 29.99, 'imatgea6.jpg', true, 20),
+('Scott', '540 P-lite Black Ultra Lime', 0, 28.13, 'imatgea7.jpg', true, 20),
+('Rossignol', 'Tactic Jr Grey - 75', 0, 16.13, 'imatgea8.jpg', true, 20),
+('K2', 'Boys Sprout', 0, 24.10, 'imatgea9.jpg', true, 20),
+('Head', 'Advant Edge 85', 0, 181.30, 'imatgeb1.jpg', true, 20),
+('Atomic', 'Hawx Magna 100', 0, 179.95, 'imatgeb2.jpg', true, 20),
+('Salomon', 'QST Access 90 CH', 0, 364.65, 'imatgeb3.jpg', true, 20),
+('Atomic', 'Hawx Ultra 110 S GW', 0, 364.65, 'imatgeb4.jpg', true, 20),
+('Nordica', 'Sportmachine 85', 0, 239.99, 'imatgeb5.jpg', true, 20),
+('Atomic', 'Hawx Prime W', 0, 155.40, 'imatgeb6.jpg', true, 20),
+('Dalbello', 'Moro MX 90', 0, 280, 'imatgeb7.jpg', true, 20),
+('Rossignol', 'Alltrack 90', 0, 269, 'imatgeb8.jpg', true, 20),
+('Lange', 'XT Free 110', 0, 341.40, 'imatgeb9.jpg', true, 20);
 
 
 INSERT INTO Esquis(ID_material, Altura) VALUES
@@ -313,6 +321,11 @@ INSERT INTO Botes(ID_material, Talla) VALUES
 (25, 25),
 (26, 25),
 (27, 27);
+
+
+INSERT INTO Lloga_material (DNI, ID_material, data) VALUES
+('47137446G', 1, (SELECT CURDATE())),
+('47137446G', 3, (SELECT CURDATE()));
 
 
 
@@ -388,39 +401,26 @@ END
 //
 
 
-#------------TRIGGER PER GUARDAR EL TOTAL DE KITS QUE S'HA LLOGAT AL LLARG DEL DIA---------------
-
-
-
-
 #------------PROCEDIMENT PER CONTROLAR QUE NOMES ELS USUARIS FEDERATS PUGUIN LLOGAR UN CURS DE COMPETICIO---------------
 
 
 DELIMITER //
 CREATE PROCEDURE llogarCurs(IN _idcurs INT, IN _dni VARCHAR(9), IN _numhores INT(1))
 BEGIN
-	
-#-----------CURSOS INDIVIDUALS-----------
-  
-  if exists (SELECT * FROM Individuals WHERE ID_curs=_idcurs) then
-	INSERT INTO Lloga_curs (DNI, ID_curs, Num_hores, Preu_final) VALUES 
-    (_dni, _idcurs, _numhores, (SELECT calcularPreu(_dni, _idcurs, _numhores)));
-  END IF;
-     
-  #-----------CURSOS COLECTIUS-----------
-  
-  if exists (SELECT * FROM Colectius WHERE ID_curs=_idcurs) then
-	INSERT INTO Lloga_curs (DNI, ID_curs, Num_hores, Preu_final) VALUES 
-    (_dni, _idcurs, _numhores, (SELECT calcularPreu(_dni, _idcurs, _numhores)));
-  END IF;
     
-#-----------CURSOS DE COMPETICIO-----------
-    
-if exists (SELECT * FROM Competicio WHERE ID_curs=_idcurs) then
+  if exists (SELECT * FROM Competicio WHERE ID_curs=_idcurs) then
 	if exists (SELECT * FROM Federats WHERE DNI=_dni) then
 		INSERT INTO Lloga_curs (DNI, ID_curs, Num_hores, Preu_final) VALUES 
 		(_dni, _idcurs, _numhores, (SELECT calcularPreu(_dni, _idcurs, _numhores)));
 	end if;
+  
+  elseif exists (SELECT * FROM Individuals WHERE ID_curs=_idcurs) then
+	INSERT INTO Lloga_curs (DNI, ID_curs, Num_hores, Preu_final) VALUES 
+	(_dni, _idcurs, _numhores, (SELECT calcularPreu(_dni, _idcurs, _numhores)));
+    
+  elseif exists (SELECT * FROM Colectius WHERE ID_curs=_idcurs) then
+	INSERT INTO Lloga_curs (DNI, ID_curs, Num_hores, Preu_final) VALUES 
+	(_dni, _idcurs, _numhores, (SELECT calcularPreu(_dni, _idcurs, _numhores)));
   end if;
 END
 //
@@ -474,6 +474,33 @@ BEGIN
   RETURN preutotal;
 END
 //
+
+
+
+#------------TRIGGER PER GUARDAR EL TOTAL DE KITS QUE S'HA LLOGAT AL LLARG DEL DIA---------------
+
+DELIMITER //
+CREATE TRIGGER kitsDia
+	AFTER INSERT
+    ON Lloga_kit FOR EACH ROW
+BEGIN
+	DECLARE kitsguardats INT(5);
+    SET kitsguardats = 	(select count(*) 
+						 FROM Lloga_kit
+						 WHERE Data_guardat= (SELECT CURDATE()));
+
+	if exists (SELECT * FROM Kits_dia WHERE dia = (SELECT CURDATE())) then
+
+	UPDATE Kits_dia SET kitsguardatsdia = kitsguardatsdia+1;
+    
+    else
+		INSERT INTO Kits_dia (dia, kitsguardatsdia) VALUES
+		((SELECT CURDATE()), kitsguardats);
+	end if;
+END
+//
+
+
 
 call crear_Kit(1, 11, 23);
 
