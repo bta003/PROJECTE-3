@@ -136,14 +136,13 @@ CREATE TABLE `Usuaris_web` (
 	`nomusuari` varchar(20) NOT NULL,
     `DNI` varchar(9) NOT NULL,
     `contrasenya` varchar(32) NOT NULL,
-    PRIMARY KEY (`email`)
+    PRIMARY KEY (`DNI`)
 );
 
 CREATE TABLE `Lloga_kit` (
 	`DNI` varchar(9) NOT NULL,
 	`ID_kit` INT NOT NULL,
-	`Data_guardat` DATE NOT NULL,
-	PRIMARY KEY (`DNI`)
+	`Data_guardat` DATE NOT NULL
 );
 
 CREATE TABLE `Kits_dia` (
