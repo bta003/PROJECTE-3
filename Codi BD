@@ -6,9 +6,11 @@ CREATE TABLE `Usuaris` (
 	`DNI` varchar(9) NOT NULL UNIQUE,
 	`Nom` varchar(20) NOT NULL,
     `Cognoms` varchar(40) NOT NULL,
-	`email` varchar(60) NOT NULL,
     `Telefon` int(9) NOT NULL,
 	`Imatge` varchar(60) NOT NULL DEFAULT '/img/defaultuser',
+	`email` varchar(60) NOT NULL,
+	`nomusuari` varchar(20) NOT NULL,
+    `contrasenya` varchar(32) NOT NULL,
 	PRIMARY KEY (`DNI`)
 );
 
@@ -131,14 +133,6 @@ CREATE TABLE `Lloga_material` (
     `data` DATE NOT NULL
 );
 
-CREATE TABLE `Usuaris_web` (
-	`email` varchar(60) NOT NULL,
-	`nomusuari` varchar(20) NOT NULL,
-    `DNI` varchar(9) NOT NULL,
-    `contrasenya` varchar(32) NOT NULL,
-    PRIMARY KEY (`DNI`)
-);
-
 CREATE TABLE `Lloga_kit` (
 	`DNI` varchar(9) NOT NULL,
 	`ID_kit` INT NOT NULL,
@@ -201,16 +195,12 @@ ALTER TABLE `Lloga_kit` ADD CONSTRAINT `Lloga_kit_fk1` FOREIGN KEY (`ID_kit`) RE
 
 
 
-INSERT INTO Usuaris (DNI, Nom, Cognoms, email, Telefon) VALUES
-('47137446G', 'Bruno', 'Tomé Arias', 'brunota.dam1@alumnescostafreda.cat', 785883790),
-('67900534A', 'Daniel', 'Alcobé Orellana', 'danielao.dam1@alumnescostafreda.cat',  622914709),
-('03595023P', 'Pau', 'Rubio Silva', 'paurs.dam1@alumnescostafreda.cat',  634133599),
-('94334295W', 'Sergi', 'Florensa Rojo', 'sergifr.dam1@alumnescostafreda.cat',  688676547),
-('23706082M', 'Matías', 'Jurado Rodríguez', 'matiasjr.aif1@alumnescostafreda.cat',  634599574);
-
-
-INSERT INTO Usuaris_web (email, nomusuari, DNI, contrasenya) VALUES
-('brunota.dam1@alumnescostafreda.cat', 'BrunoTA', '47137446G', md5('1234'));
+INSERT INTO Usuaris (DNI, Nom, Cognoms, email, Telefon, nomusuari, contrasenya) VALUES
+('47137446G', 'Bruno', 'Tomé Arias', 'brunota.dam1@alumnescostafreda.cat', 785883790, 'BrunoTA', md5('1234')),
+('67900534A', 'Daniel', 'Alcobé Orellana', 'danielao.dam1@alumnescostafreda.cat',  622914709, 'DanielAO', md5('1234')),
+('03595023P', 'Pau', 'Rubio Silva', 'paurs.dam1@alumnescostafreda.cat',  634133599, 'PauRS', md5('1234')),
+('94334295W', 'Sergi', 'Florensa Rojo', 'sergifr.dam1@alumnescostafreda.cat',  688676547, 'SergiFR', md5('1234')),
+('23706082M', 'Matías', 'Jurado Rodríguez', 'matiasjr.aif1@alumnescostafreda.cat',  634599574, 'MatiasJR', md5('1234'));
 
 
 INSERT INTO Federats (DNI, Num_federacio, Nivell) VALUES
