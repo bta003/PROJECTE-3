@@ -194,7 +194,6 @@ ALTER TABLE `Lloga_kit` ADD CONSTRAINT `Lloga_kit_fk0` FOREIGN KEY (`DNI`) REFER
 ALTER TABLE `Lloga_kit` ADD CONSTRAINT `Lloga_kit_fk1` FOREIGN KEY (`ID_kit`) REFERENCES `Kit`(`ID_kit`);
 
 
-
 INSERT INTO Usuaris (DNI, Nom, Cognoms, email, Telefon, nomusuari, contrasenya) VALUES
 ('47137446G', 'Bruno', 'Tomé Arias', 'brunota.dam1@alumnescostafreda.cat', 785883790, 'BrunoTA', md5('1234')),
 ('67900534A', 'Daniel', 'Alcobé Orellana', 'danielao.dam1@alumnescostafreda.cat',  622914709, 'DanielAO', md5('1234')),
@@ -203,28 +202,31 @@ INSERT INTO Usuaris (DNI, Nom, Cognoms, email, Telefon, nomusuari, contrasenya) 
 ('23706082M', 'Matías', 'Jurado Rodríguez', 'matiasjr.aif1@alumnescostafreda.cat',  634599574, 'MatiasJR', md5('1234'));
 
 
+
 INSERT INTO Federats (DNI, Num_federacio, Nivell) VALUES
 ('67900534A', '463728', 'Alt'),
 ('03595023P', '463728', 'Mig');
+
+
 
 
 INSERT INTO Familia_nombrosa (DNI, Num_carnet) VALUES
 ('47137446G', '22/666666/4444');
 
 
+
+
+
 INSERT INTO Cursos (Nom, Preu_hora, Descripcio, Data_inici, Hora_inici) VALUES
-('nom1', 20, 'descripcio1', '2022/05/05', '12:00:00'),
-('nom2', 25, 'descripcio2', '2022/05/06', '12:00:00'),
-('nom3', 22, 'descripcio3', '2022/05/07', '12:00:00'),
-('nom4', 15, 'descripcio4', '2022/05/08', '12:00:00');
+('Curs de competició',   20, 'Curs federat de nivell baix', '2022/05/05', '12:00:00'),
+('Curs de competició', 25, 'Curs federat de nivell mig', '2022/05/06', '12:00:00'),
+('Curs de competició', 22, 'Curs federat de nivell alt', '2022/05/07', '12:00:00'),
+('Curs individual', 15, 'Curs individual per a tothom', '2022/05/08', '12:00:00'),
+('Curs col·lectiu', 12 , 'Curs col·lectiu per a grups i famílies', '2022/05/07', '12:00:00');
 
 
-#INSERT INTO Colectius (ID_curs) VALUES
-#();
 
 
-INSERT INTO Individuals (ID_curs) VALUES
-(4);
 
 
 INSERT INTO Competicio (ID_curs, nivell) VALUES
@@ -232,6 +234,11 @@ INSERT INTO Competicio (ID_curs, nivell) VALUES
 (2, 'mig'),
 (3, 'alt');
 
+INSERT INTO Individuals (ID_curs) VALUES
+(4);
+
+INSERT INTO Colectius(ID_curs) VALUES
+(5);
 
 INSERT INTO Monitors (DNI, NSS, Nom, Cognoms, Telefon, email) VALUES
 ('84701532F', '487263677','María', 'Jesús Pla', 631588821, 'mariajp@eskydam.com'),
@@ -315,8 +322,6 @@ INSERT INTO Botes(ID_material, Talla) VALUES
 INSERT INTO Lloga_material (DNI, ID_material, data) VALUES
 ('47137446G', 1, (SELECT CURDATE())),
 ('47137446G', 3, (SELECT CURDATE()));
-
-
 
 #---------------PROCEDIMENT PER CREAR KITS----------------------
 
