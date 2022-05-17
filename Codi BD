@@ -38,7 +38,7 @@ CREATE TABLE `Cursos` (
     `Preu_hora` int(3) NOT NULL,
 	`Descripcio` varchar(255) NOT NULL,
     `Data_inici` date NOT NULL,
-    `Hora_inici` date NOT NULL,
+    `Hora_inici` time NOT NULL,
 	PRIMARY KEY (`ID_curs`)
 );
 
@@ -322,6 +322,10 @@ INSERT INTO Botes(ID_material, Talla) VALUES
 INSERT INTO Lloga_material (DNI, ID_material, data) VALUES
 ('47137446G', 1, (SELECT CURDATE())),
 ('47137446G', 3, (SELECT CURDATE()));
+
+
+
+SET GLOBAL log_bin_trust_function_creators = 1;
 
 #---------------PROCEDIMENT PER CREAR KITS----------------------
 
