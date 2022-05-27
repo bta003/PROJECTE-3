@@ -1,0 +1,30 @@
+*{
+    margin:0; padding:0;
+   box-sizing: border-box;
+   outline: none; border:none;
+   text-decoration: none;
+}
+
+body{
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(60deg, #2a3bd1, #30a0c9, #23bb8d, #fff);
+    background-size: 600% 100%;
+    animation: degradatAnimat 15s infinite linear;
+}
+
+@keyframes degradatAnimat{
+    0%{
+        background-position: 0 85%;
+    }
+
+    50%{
+        background-position: 100% 20%;
+    }
+
+    100%{
+        background-position: 0% 85%;
+    }    
+
+}
